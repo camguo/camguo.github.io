@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Camilla Guo" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Project 1: Exploratory Data Analysis</title>
+    <meta name="generator" content="Hugo 0.83.1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project1/">Project 1: Exploratory Data Analysis</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         January 1, 0001 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>These 4 datasets were found online, mostly on www.ourworldindata.org (all links included at the end). The data on the price of Big Macs was encountered coincidentally and just sounded like something interesting to test for relationships with other variables, based on countries and year.</p>
+<p>These datasets depict the average price of a Big Mac burger in a year, the amount of meat consumed in grams per person per day, the percentage of adults who are obese per country, and the percentage of adults who are overweight or obese per country (post data tidying, the percentage of adults who are overweight or obese per country gets separated into 2 variables: just overweight, and overweight or obese).</p>
+<p>Throughout my life, I’ve noticed that fast foods tend to be shone in a negative light by society. When I stumbled upon the Big Mac dataset, I wondered if it was possible to calculate whether the price of fast food foods had an influence on how much a population consumed certain macronutrients, which in this case is protein. Would lower Big Mac prices be related to higher amounts of meat consumed? Would lower prices also relate to greater percentages of overweight or obese adults?</p>
+<p>I predict strong correlations to exist between low Big Mac prices, high meat consumption, and high percentages of overweight and obese adults. However, while strong correlations may be visible, it should be remembered that there are many factors affecting these values that we can’t see from looking at data. We don’t know the perspective a country’s population and culture has on fast food in their country. We also don’t know the differences in food standards that vary by country. In one country, Big Mac prices may be low and indicative of high meat consumption, but percentages of overweight and obese adults may be very low. Lifestyle factors, such as walking instead of driving to destinations, can also affect these relationships. It should be kept in mind that there is always more to be considered.</p>
+<pre class="r"><code>library(tidyverse)
+big_mac &lt;- read_csv(&quot;big-mac-full-index.csv&quot;)
+share_overweight &lt;- read_csv(&quot;share-of-adults-who-are-overweight.csv&quot;)
+share_obesity &lt;- read_csv(&quot;share-of-adults-defined-as-obese.csv&quot;)
+daily_meat_cons &lt;- read_csv(&quot;daily-meat-consumption-per-person.csv&quot;)</code></pre>
+</div>
+<div id="tidying" class="section level3">
+<h3>Tidying</h3>
+<pre class="r"><code># clean big_mac dataset
+big_mac &lt;- big_mac %&gt;% separate(date, into = c(&quot;year&quot;, &quot;month&quot;), 
+    convert = T) %&gt;% rename(country_3_code = iso_a3) %&gt;% filter(year &lt;= 
+    &quot;2013&quot;) %&gt;% filter(month &gt; &quot;1&quot;) %&gt;% select(year, country_3_code, 
+    name, dollar_price)
+
+# clean overweight dataset
+share_overweight &lt;- share_overweight %&gt;% rename(percent_overweight_obese = Prevalence_of_overweight) %&gt;% 
+    filter(Year &gt;= &quot;2000&quot;) %&gt;% filter(Year &lt;= &quot;2013&quot;)
+
+# clean obesity dataset
+share_obesity &lt;- share_obesity %&gt;% rename(percent_obese = Prevalence_of_obesity) %&gt;% 
+    filter(Year &gt;= &quot;2000&quot;) %&gt;% filter(Year &lt;= &quot;2013&quot;)
+
+# clean meat consumption dataset
+daily_meat_cons &lt;- daily_meat_cons %&gt;% filter(Year &gt;= &quot;2000&quot;) %&gt;% 
+    filter(Year &lt;= &quot;2013&quot;)</code></pre>
+</div>
+<div id="joiningmerging" class="section level3">
+<h3>Joining/Merging</h3>
+<pre class="r"><code># join obesity and overweight datasets
+overweight_obesity &lt;- left_join(share_overweight, share_obesity, 
+    by = c(&quot;Entity&quot;, &quot;Year&quot;, &quot;Code&quot;))
+
+# join big mac and daily meat consumption datasets. clean
+bigmac_meatcons &lt;- left_join(big_mac, daily_meat_cons, by = c(name = &quot;Entity&quot;, 
+    year = &quot;Year&quot;)) %&gt;% select(!Code)
+
+# join all datasets
+full_project_data &lt;- left_join(bigmac_meatcons, overweight_obesity, 
+    by = c(name = &quot;Entity&quot;, year = &quot;Year&quot;)) %&gt;% select(!Code) %&gt;% 
+    na.omit()
+
+full_project_data %&gt;% glimpse()</code></pre>
+<pre><code>## Rows: 431
+## Columns: 7
+## $ year                     &lt;dbl&gt; 2000, 2000, 2000, 2000, 2000, 2000, 2000, 20…
+## $ country_3_code           &lt;chr&gt; &quot;ARG&quot;, &quot;AUS&quot;, &quot;BRA&quot;, &quot;CAN&quot;, &quot;CHE&quot;, &quot;CHL&quot;, &quot;C…
+## $ name                     &lt;chr&gt; &quot;Argentina&quot;, &quot;Australia&quot;, &quot;Brazil&quot;, &quot;Canada&quot;…
+## $ dollar_price             &lt;dbl&gt; 2.500000, 1.541667, 1.648045, 1.938776, 3.47…
+## $ meat_cons_g_pperson_pday &lt;dbl&gt; 270.5750, 304.3318, 216.4052, 277.4798, 196.…
+## $ percent_overweight_obese &lt;dbl&gt; 54.0, 58.2, 43.7, 57.8, 50.8, 54.0, 20.5, 52…
+## $ percent_obese            &lt;dbl&gt; 20.7, 20.2, 14.5, 20.5, 13.9, 20.6, 2.4, 14.…</code></pre>
+</div>
+<div id="wrangling" class="section level3">
+<h3>Wrangling</h3>
+<pre class="r"><code># summary statistics
+full_project_data %&gt;% summarize_all(mean)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year country_3_code  name dollar_price meat_cons_g_ppe… percent_overwei…
+##   &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 2007.             NA    NA         2.92             167.             47.9
+## # … with 1 more variable: percent_obese &lt;dbl&gt;</code></pre>
+<pre class="r"><code>full_project_data %&gt;% summarize_all(sd)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year country_3_code  name dollar_price meat_cons_g_ppe… percent_overwei…
+##   &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1  3.89             NA    NA         1.38             82.1             15.7
+## # … with 1 more variable: percent_obese &lt;dbl&gt;</code></pre>
+<pre class="r"><code>full_project_data %&gt;% select(name, dollar_price, meat_cons_g_pperson_pday, 
+    percent_overweight_obese, percent_obese) %&gt;% group_by(name) %&gt;% 
+    summarize_all(mean) %&gt;% arrange(desc(meat_cons_g_pperson_pday))</code></pre>
+<pre><code>## # A tibble: 35 x 5
+##    name      dollar_price meat_cons_g_pperson… percent_overweight… percent_obese
+##    &lt;chr&gt;            &lt;dbl&gt;                &lt;dbl&gt;               &lt;dbl&gt;         &lt;dbl&gt;
+##  1 United S…         3.32                 332.                64.6          30.0
+##  2 Australia         2.96                 313.                62.1          23.7
+##  3 New Zeal…         3.02                 291.                62.8          25.2
+##  4 Canada            3.35                 264.                62.0          24.1
+##  5 Israel            3.73                 263.                62.1          23.6
+##  6 Argentina         2.74                 262.                57.8          23.7
+##  7 Brazil            3.35                 230.                49.0          17.5
+##  8 Hungary           2.89                 225.                59.7          22.1
+##  9 Denmark           4.53                 214.                55.4          16.2
+## 10 Sweden            4.72                 212.                55.8          16.9
+## # … with 25 more rows</code></pre>
+<pre class="r"><code>full_project_data %&gt;% select(year, dollar_price, meat_cons_g_pperson_pday, 
+    percent_overweight_obese, percent_obese) %&gt;% group_by(year) %&gt;% 
+    summarize_all(mean)</code></pre>
+<pre><code>## # A tibble: 14 x 5
+##     year dollar_price meat_cons_g_pperson_p… percent_overweight_o… percent_obese
+##    &lt;dbl&gt;        &lt;dbl&gt;                  &lt;dbl&gt;                 &lt;dbl&gt;         &lt;dbl&gt;
+##  1  2000         2.08                   185.                  44.7          14.7
+##  2  2001         1.87                   178.                  43.5          14.3
+##  3  2002         2.02                   176.                  45.6          15.3
+##  4  2003         2.13                   169.                  45.6          15.7
+##  5  2004         2.23                   153.                  46.0          16.1
+##  6  2005         2.50                   156.                  46.7          16.5
+##  7  2006         2.63                   159.                  47.3          16.9
+##  8  2007         2.93                   164.                  47.9          17.4
+##  9  2008         3.44                   165.                  48.6          17.8
+## 10  2009         3.10                   165.                  49.6          18.4
+## 11  2010         3.44                   168.                  50.2          18.8
+## 12  2011         3.95                   168.                  49.9          18.8
+## 13  2012         3.62                   172.                  50.3          19.1
+## 14  2013         3.78                   171.                  51.2          19.6</code></pre>
+<pre class="r"><code>full_project_data %&gt;% mutate(meat_cons_pctile = ntile(meat_cons_g_pperson_pday, 
+    100)) %&gt;% mutate(overweight_pctile = ntile(percent_overweight_obese, 
+    100)) %&gt;% mutate(obesity_pctile = ntile(percent_obese, 100)) %&gt;% 
+    select(year, name, meat_cons_pctile, overweight_pctile, obesity_pctile)</code></pre>
+<pre><code>## # A tibble: 431 x 5
+##     year name        meat_cons_pctile overweight_pctile obesity_pctile
+##    &lt;dbl&gt; &lt;chr&gt;                  &lt;int&gt;             &lt;int&gt;          &lt;int&gt;
+##  1  2000 Argentina                 87                40             52
+##  2  2000 Australia                 94                66             49
+##  3  2000 Brazil                    73                26             26
+##  4  2000 Canada                    90                64             51
+##  5  2000 Switzerland               59                31             25
+##  6  2000 Chile                     52                40             52
+##  7  2000 China                     25                 6              1
+##  8  2000 Denmark                   57                34             25
+##  9  2000 Hungary                   84                52             46
+## 10  2000 Indonesia                  3                 1              2
+## # … with 421 more rows</code></pre>
+<pre class="r"><code>full_project_data %&gt;% group_by(name) %&gt;% mutate(cum_mean_meat_cons = cummean(meat_cons_g_pperson_pday)) %&gt;% 
+    select(year, name, cum_mean_meat_cons)</code></pre>
+<pre><code>## # A tibble: 431 x 3
+## # Groups:   name [35]
+##     year name        cum_mean_meat_cons
+##    &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt;
+##  1  2000 Argentina                271. 
+##  2  2000 Australia                304. 
+##  3  2000 Brazil                   216. 
+##  4  2000 Canada                   277. 
+##  5  2000 Switzerland              196. 
+##  6  2000 Chile                    178. 
+##  7  2000 China                    123. 
+##  8  2000 Denmark                  191. 
+##  9  2000 Hungary                  258. 
+## 10  2000 Indonesia                 22.9
+## # … with 421 more rows</code></pre>
+<pre class="r"><code># making a categorical variable from a numerical variable
+full_project_data %&gt;% summarize(mean(meat_cons_g_pperson_pday))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean(meat_cons_g_pperson_pday)`
+##                              &lt;dbl&gt;
+## 1                             167.</code></pre>
+<pre class="r"><code>full_project_data %&gt;% summarize(sd(meat_cons_g_pperson_pday))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `sd(meat_cons_g_pperson_pday)`
+##                            &lt;dbl&gt;
+## 1                           82.1</code></pre>
+<pre class="r"><code>qnorm(p = 0.0015, mean = 166.8963, sd = 82.07575)</code></pre>
+<pre><code>## [1] -76.68302</code></pre>
+<pre class="r"><code>qnorm(p = 0.025, mean = 166.8963, sd = 82.07575)</code></pre>
+<pre><code>## [1] 6.030786</code></pre>
+<pre class="r"><code>qnorm(p = 0.16, mean = 166.8963, sd = 82.07575)</code></pre>
+<pre><code>## [1] 85.27542</code></pre>
+<pre class="r"><code>qnorm(p = 0.84, mean = 166.8963, sd = 82.07575)</code></pre>
+<pre><code>## [1] 248.5172</code></pre>
+<pre class="r"><code>qnorm(p = 0.975, mean = 166.8963, sd = 82.07575)</code></pre>
+<pre><code>## [1] 327.7618</code></pre>
+<pre class="r"><code>qnorm(p = 0.9985, mean = 166.8963, sd = 82.07575)</code></pre>
+<pre><code>## [1] 410.4756</code></pre>
+<pre class="r"><code>full_project_data &lt;- full_project_data %&gt;% mutate(meat2 = case_when(meat_cons_g_pperson_pday &gt; 
+    327.7618 ~ &quot;high&quot;, meat_cons_g_pperson_pday &lt;= 327.7618 &amp; 
+    6.030786 &lt;= meat_cons_g_pperson_pday ~ &quot;med&quot;, meat_cons_g_pperson_pday &lt; 
+    6.030786 ~ &quot;low&quot;))
+full_project_data %&gt;% summarize(n_distinct(meat2))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `n_distinct(meat2)`
+##                 &lt;int&gt;
+## 1                   2</code></pre>
+<pre class="r"><code># making a numerical variable (explanation below the heatmap)
+full_project_data &lt;- full_project_data %&gt;% mutate(percent_overweight = percent_overweight_obese - 
+    percent_obese)
+
+# correlation matrix
+p_cormat &lt;- full_project_data %&gt;% select_if(is.numeric) %&gt;% select(!percent_overweight_obese) %&gt;% 
+    cor</code></pre>
+</div>
+<div id="visualizing" class="section level3">
+<h3>Visualizing</h3>
+<pre class="r"><code>tidycor &lt;- p_cormat %&gt;% as.data.frame %&gt;% rownames_to_column(&quot;var1&quot;) %&gt;% 
+    pivot_longer(-1, names_to = &quot;var2&quot;, values_to = &quot;correlation&quot;)
+
+tidycor %&gt;% ggplot(aes(var1, var2, fill = correlation)) + geom_tile() + 
+    scale_fill_gradient2(low = &quot;green&quot;, mid = &quot;white&quot;, high = &quot;red&quot;) + 
+    geom_text(aes(label = round(correlation, 2)), color = &quot;black&quot;, 
+        size = 4) + theme(axis.text.x = element_text(angle = 45, 
+    hjust = 1)) + coord_fixed()</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+Year seems to have mostly low correlation with other variables, and surprisingly, the price of a Big Mac burger does not strongly relate to other variables much. The amount of meat consumed in grams per person per day somewhat predicts the percentage of adults in a country who are overweight or obese. As more meat is consumed, and perhaps more calories, weight from muscle or fat may increase. The percentage of overweight adults in a country strongly predicts the percentage of obese adults and vice versa.</p>
+<p>While creating the correlation matrix for this correlation heatmap, “percent_overweight_obese” was omitted because this percentage includes both percentage of overweight adults and percentage of obese adults per country per year. I didn’t believe this would fit when trying to visualize any correlation it may have with other variables.</p>
+<pre class="r"><code>ggplot(full_project_data, aes(x = percent_overweight, y = percent_obese)) + 
+    geom_point(aes(color = name), size = 0.5) + geom_smooth(method = &quot;lm&quot;) + 
+    xlab(&quot;Percentage of Overweight Adults&quot;) + ylab(&quot;Percentage of Obese Adults&quot;) + 
+    ggtitle(&quot;Percentage of Obese vs. Overweight Adults&quot;) + labs(color = &quot;Country&quot;)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" />
+This plot illustrates the correlation between percent of overweight adults and percent of obese adults by country. As the percentage of overweight adults begins to increase, the correlation with percentage of obese adults seems to increase as well.</p>
+<pre class="r"><code>ggplot(full_project_data, aes(x = year, y = dollar_price, fill = meat2)) + 
+    geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;) + geom_errorbar(stat = &quot;summary&quot;, 
+    position = &quot;dodge&quot;) + xlab(&quot;Year&quot;) + ylab(&quot;Price of a Big Mac in USD($)&quot;) + 
+    ggtitle(&quot;Price of a Big Mac Over Time by Consumption Level&quot;) + 
+    labs(fill = &quot;Meat Consumption&quot;)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
+This bar plot depicts the gradual yearly increase in the average price of a Big Mac burger, and separates each year into whether meat consumption was high or in the middle (values deemed low, or 2 standard deviations and more below the mean, did not exist). While this looks like a strong positive correlation, there are many factors that could have caused this increase such as inflation of the US Dollar. It’s interesting to see that in some years, meat consumption was within 1 standard deviation away from the mean. I wonder what may have caused this. Economic changes? A wave of changing societal views to eat less meat?</p>
+</div>
+<div id="dimensionality-reduction" class="section level3">
+<h3>Dimensionality Reduction</h3>
+<pre class="r"><code>library(GGally)
+
+PCAp &lt;- full_project_data %&gt;% select(-2, -6)
+# selected the variables I want to use
+proj_nums &lt;- PCAp %&gt;% select_if(is.numeric) %&gt;% scale
+# normalized
+rownames(proj_nums) &lt;- PCAp$name
+proj_pca &lt;- princomp(proj_nums)
+names(proj_pca)</code></pre>
+<pre><code>## [1] &quot;sdev&quot;     &quot;loadings&quot; &quot;center&quot;   &quot;scale&quot;    &quot;n.obs&quot;    &quot;scores&quot;   &quot;call&quot;</code></pre>
+<pre class="r"><code>summary(proj_pca, loadings = T)</code></pre>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2    Comp.3     Comp.4     Comp.5
+## Standard deviation     1.6410058 1.1112960 0.7451634 0.59826517 0.38383664
+## Proportion of Variance 0.5398325 0.2475701 0.1113120 0.07175072 0.02953464
+## Cumulative Proportion  0.5398325 0.7874027 0.8987146 0.97046536 1.00000000
+## 
+## Loadings:
+##                          Comp.1 Comp.2 Comp.3 Comp.4 Comp.5
+## year                      0.189  0.779  0.423  0.350  0.236
+## dollar_price              0.407  0.480 -0.624 -0.295 -0.357
+## meat_cons_g_pperson_pday  0.485 -0.310 -0.214  0.778 -0.132
+## percent_obese             0.502 -0.174  0.619 -0.296 -0.496
+## percent_overweight        0.557 -0.188        -0.313  0.744</code></pre>
+<p>With a high PC1 value, most variables will be high. With a high PC2 value, year will be high meaning later in time, and Big Mac USD price will be high while meat consumption, percent obese, and percent overweight will be low.</p>
+<pre class="r"><code>eigval &lt;- proj_pca$sdev^2
+varprop = round(eigval/sum(eigval), 2)
+
+ggplot() + geom_bar(aes(y = varprop, x = 1:5), stat = &quot;identity&quot;) + 
+    xlab(&quot;&quot;) + geom_path(aes(y = varprop, x = 1:5)) + geom_text(aes(x = 1:5, 
+    y = varprop, label = round(varprop, 2)), vjust = 1, col = &quot;white&quot;, 
+    size = 5) + scale_y_continuous(breaks = seq(0, 0.6, 0.2), 
+    labels = scales::percent) + scale_x_continuous(breaks = 1:10)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>round(cumsum(eigval)/sum(eigval), 2)</code></pre>
+<pre><code>## Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 
+##   0.54   0.79   0.90   0.97   1.00</code></pre>
+<pre class="r"><code>eigval</code></pre>
+<pre><code>##    Comp.1    Comp.2    Comp.3    Comp.4    Comp.5 
+## 2.6929000 1.2349787 0.5552685 0.3579212 0.1473306</code></pre>
+<p>I should keep 3 PCs as that is where the cumulative proportion of variance is first greater than 80% and simultaneously where the eigenvalue is greater than 1.</p>
+<pre class="r"><code>projdf &lt;- data.frame(Name = PCAp$name, PC1 = proj_pca$scores[, 
+    1], PC2 = proj_pca$scores[, 2])
+
+ggplot(projdf, aes(PC1, PC2)) + geom_point()</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" />
+This plot shows how each observation scores on PC1 and PC2. It seems like a greater proportion of the observations score positively on PC1, and the ones that score negatively are very spread out. It seems to be about the same for PC2 as well, but more centered around 0.</p>
+<p>Highest scores on PC1.</p>
+<pre class="r"><code>proj_pca$scores[, 1:4] %&gt;% as.data.frame %&gt;% top_n(3, Comp.1)</code></pre>
+<pre><code>##                    Comp.1    Comp.2     Comp.3    Comp.4
+## Australia.11     2.807615 0.5270774 -0.3364424 0.8898438
+## Australia.13     2.793512 0.8435317  0.1412230 0.9745112
+## United.States.13 2.892444 0.7835060  0.7053352 0.8720729</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Australia&quot;, year == &quot;2011&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2011 Aust…         4.94             332.          26.2 high              38.2</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Australia&quot;, year == &quot;2013&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2013 Aust…         4.62             318.          27.3 med               38.2</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;United States&quot;, year == &quot;2013&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2013 Unit…         4.56             315.          34.3 med               34.3</code></pre>
+<p>Lowest scores on PC1.</p>
+<pre class="r"><code>proj_pca$scores[, 1:4] %&gt;% as.data.frame %&gt;% top_n(-3, Comp.1)</code></pre>
+<pre><code>##                Comp.1     Comp.2     Comp.3     Comp.4
+## Indonesia   -3.601281 -0.5286534 -0.8102692 -0.5644193
+## Indonesia.1 -3.647409 -0.5092405 -0.4792548 -0.3874402
+## Sri.Lanka   -3.507760  0.1307468 -0.1745360 -0.1863511</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Indonesia&quot;, year == &quot;2000&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2000 Indo…         1.83             22.9           2.6 med               12.8</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Indonesia&quot;, year == &quot;2001&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2001 Indo…         1.35             23.8           2.8 med               13.2</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Sri Lanka&quot;, year == &quot;2000&quot;)</code></pre>
+<pre><code>## # A tibble: 0 x 7
+## # … with 7 variables: year &lt;dbl&gt;, name &lt;chr&gt;, dollar_price &lt;dbl&gt;,
+## #   meat_cons_g_pperson_pday &lt;dbl&gt;, percent_obese &lt;dbl&gt;, meat2 &lt;chr&gt;,
+## #   percent_overweight &lt;dbl&gt;</code></pre>
+<p>Highest scores on PC2.</p>
+<pre class="r"><code>proj_pca$scores[, 1:4] %&gt;% as.data.frame %&gt;% top_n(3, wt = Comp.2)</code></pre>
+<pre><code>##                Comp.1   Comp.2     Comp.3      Comp.4
+## Norway.8     2.628636 2.370734 -1.8562730 -1.09103353
+## Sri.Lanka.9 -2.272809 2.300176  0.2564614  0.09610689
+## Norway.10    2.616924 2.423196 -1.2439449 -0.64555015</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Norway&quot;, year == &quot;2008&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2008 Norw…         7.88             189.          19.5 med               38.5</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Sri Lanka&quot;, year == &quot;2009&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2009 Sri …         1.83             17.1           3.5 med               15.7</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Norway&quot;, year == &quot;2010&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2010 Norw…         7.20             181.          20.4 med               38.5</code></pre>
+<p>Lowest scores on PC2.</p>
+<pre class="r"><code>proj_pca$scores[, 1:4] %&gt;% as.data.frame %&gt;% top_n(3, wt = desc(Comp.2))</code></pre>
+<pre><code>##                Comp.1    Comp.2     Comp.3    Comp.4
+## Australia   0.7413872 -2.634646 -0.3461792 0.5817787
+## Hungary     0.2345065 -2.527649 -0.1100066 0.2951907
+## Australia.1 0.8140718 -2.449141 -0.1840702 0.6200546</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Australia&quot;, year == &quot;2000&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2000 Aust…         1.54             304.          20.2 med                 38</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Hungary&quot;, year == &quot;2000&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2000 Hung…         1.22             258.          19.6 med               36.5</code></pre>
+<pre class="r"><code>PCAp %&gt;% filter(name == &quot;Australia&quot;, year == &quot;2001&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##    year name  dollar_price meat_cons_g_ppe… percent_obese meat2 percent_overwei…
+##   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+## 1  2001 Aust…         1.52             301.          20.7 med               38.3</code></pre>
+<pre class="r"><code>proj_pca$loadings[1:5, 1:2] %&gt;% as.data.frame %&gt;% rownames_to_column %&gt;% 
+    ggplot() + geom_hline(aes(yintercept = 0), lty = 2) + geom_vline(aes(xintercept = 0), 
+    lty = 2) + ylab(&quot;PC2&quot;) + xlab(&quot;PC1&quot;) + geom_segment(aes(x = 0, 
+    y = 0, xend = Comp.1, yend = Comp.2), arrow = arrow(), col = &quot;red&quot;) + 
+    geom_label(aes(x = Comp.1 * 1.1, y = Comp.2 * 1.1, label = rowname))</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" />
+All variables positively contribute to PC1, but meat consumption, percent of overweight adults, and percent of obese adults contribute the most. Year and Big Mac USD price contribute positively to PC2 while meat consumption, percent obese, and percent overweight contribute negatively to PC2.</p>
+</div>
+<div id="dataset-sources" class="section level3">
+<h3>Dataset sources</h3>
+<ul>
+<li>big mac <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-12-22/readme.md" class="uri">https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-12-22/readme.md</a></li>
+<li>share of adults who are overweight <a href="https://ourworldindata.org/grapher/share-of-adults-who-are-overweight" class="uri">https://ourworldindata.org/grapher/share-of-adults-who-are-overweight</a></li>
+<li>share of adults defined as obese <a href="https://ourworldindata.org/grapher/share-of-adults-defined-as-obese" class="uri">https://ourworldindata.org/grapher/share-of-adults-defined-as-obese</a></li>
+<li>daily meat consumption (grams) per person per day <a href="https://ourworldindata.org/grapher/daily-meat-consumption-per-person?tab=chart" class="uri">https://ourworldindata.org/grapher/daily-meat-consumption-per-person?tab=chart</a></li>
+</ul>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

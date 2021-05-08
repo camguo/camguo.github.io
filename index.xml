@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Camilla Guo</title>
+    <link>/</link>
+    <description>Recent content on Camilla Guo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 08 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>my post</title>
+      <link>/post/2021/05/08/my-post/</link>
+      <pubDate>Sat, 08 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021/05/08/my-post/</guid>
+      <description>Hello!</description>
+    </item>
+    
+    <item>
+      <title>Project 1: Exploratory Data Analysis</title>
+      <link>/project/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>Introduction These 4 datasets were found online, mostly on www.ourworldindata.org (all links included at the end). The data on the price of Big Macs was encountered coincidentally and just sounded like something interesting to test for relationships with other variables, based on countries and year.
+These datasets depict the average price of a Big Mac burger in a year, the amount of meat consumed in grams per person per day, the percentage of adults who are obese per country, and the percentage of adults who are overweight or obese per country (post data tidying, the percentage of adults who are overweight or obese per country gets separated into 2 variables: just overweight, and overweight or obese).</description>
+    </item>
+    
+    <item>
+      <title>Project 2: Modeling, Testing, and Predicting</title>
+      <link>/project/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>Introduction The carnivora dataset contains various information about “dog-like” and “cat-like” (based on superfamily) carnivores such as taxonomic, morphological, and life history data. Taxonomic variables include their order, superfamily, family, genus, and species. Only superfamily and family will be used due to the other three containing too many distinct values or too little. Morphological variables include average female body weight (kg), average body weight of adult males and adult females (kg), average female brain weight (g), and average brain weight of adult males and adult females (g).</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description> Check out some of my coding projects below:
+ Wrangling &amp;amp; Exploratory Data Analysis
+ Modeling, Inference, Prediction
+  -- </description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume/</guid>
+      <description>    </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,251 @@
+---
+title: 'Project 1: Exploratory Data Analysis'
+author: "Camilla Guo (cdg2837)"
+date: ''
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  pdf_document:
+    toc: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", warning = F, message = F,
+tidy=TRUE, tidy.opts=list(width.cutoff=60), R.options=list(max.print=100))
+```
+
+### Introduction
+
+These 4 datasets were found online, mostly on www.ourworldindata.org (all links included at the end). The data on the price of Big Macs was encountered coincidentally and just sounded like something interesting to test for relationships with other variables, based on countries and year.
+
+These datasets depict the average price of a Big Mac burger in a year, the amount of meat consumed in grams per person per day, the percentage of adults who are obese per country, and the percentage of adults who are overweight or obese per country (post data tidying, the percentage of adults who are overweight or obese per country gets separated into 2 variables: just overweight, and overweight or obese).
+
+Throughout my life, I've noticed that fast foods tend to be shone in a negative light by society. When I stumbled upon the Big Mac dataset, I wondered if it was possible to calculate whether the price of fast food foods had an influence on how much a population consumed certain macronutrients, which in this case is protein. Would lower Big Mac prices be related to higher amounts of meat consumed? Would lower prices also relate to greater percentages of overweight or obese adults?
+
+I predict strong correlations to exist between low Big Mac prices, high meat consumption, and high percentages of overweight and obese adults. However, while strong correlations may be visible, it should be remembered that there are many factors affecting these values that we can't see from looking at data. We don't know the perspective a country's population and culture has on fast food in their country. We also don't know the differences in food standards that vary by country. In one country, Big Mac prices may be low and indicative of high meat consumption, but percentages of overweight and obese adults may be very low. Lifestyle factors, such as walking instead of driving to destinations, can also affect these relationships. It should be kept in mind that there is always more to be considered.
+
+```{R}
+library(tidyverse)
+big_mac <- read_csv('big-mac-full-index.csv')
+share_overweight <- read_csv('share-of-adults-who-are-overweight.csv')
+share_obesity <- read_csv('share-of-adults-defined-as-obese.csv')
+daily_meat_cons <- read_csv('daily-meat-consumption-per-person.csv')
+```
+
+### Tidying
+
+```{R}
+# clean big_mac dataset
+big_mac <- big_mac %>%
+  separate(date, into = c('year','month'), convert=T) %>%
+  rename(country_3_code = iso_a3) %>%
+  filter(year <= '2013') %>%
+  filter(month > '1')  %>%
+  select(year, country_3_code, name, dollar_price)
+
+# clean overweight dataset
+share_overweight <- share_overweight %>%
+  rename(percent_overweight_obese = Prevalence_of_overweight) %>%
+  filter(Year >= '2000') %>% 
+  filter(Year <= '2013')
+
+# clean obesity dataset
+share_obesity <- share_obesity %>%
+  rename(percent_obese = Prevalence_of_obesity) %>%
+  filter(Year >= '2000') %>% 
+  filter(Year <= '2013') 
+
+# clean meat consumption dataset
+daily_meat_cons <- daily_meat_cons %>% 
+  filter(Year >= '2000') %>% 
+  filter(Year <= '2013')
+```
+
+### Joining/Merging
+
+```{R}
+# join obesity and overweight datasets
+overweight_obesity <- left_join(share_overweight, share_obesity, by=c('Entity','Year','Code'))
+
+# join big mac and daily meat consumption datasets. clean
+bigmac_meatcons <- left_join(big_mac, daily_meat_cons, by=c('name'='Entity', 'year'='Year')) %>% 
+  select(!Code)
+
+# join all datasets
+full_project_data <- left_join(bigmac_meatcons, overweight_obesity, by=c('name'='Entity', 'year'='Year')) %>% select(!Code) %>% na.omit()
+
+full_project_data %>% glimpse()
+```
+
+### Wrangling
+
+```{R}
+# summary statistics
+full_project_data %>% summarize_all(mean)
+full_project_data %>% summarize_all(sd)
+
+full_project_data %>% 
+  select(name, dollar_price, meat_cons_g_pperson_pday, percent_overweight_obese, percent_obese) %>%
+  group_by(name) %>% 
+  summarize_all(mean) %>%
+  arrange(desc(meat_cons_g_pperson_pday))
+
+full_project_data %>% 
+  select(year, dollar_price, meat_cons_g_pperson_pday, percent_overweight_obese, percent_obese) %>%
+  group_by(year) %>% 
+  summarize_all(mean)
+
+full_project_data %>%
+  mutate('meat_cons_pctile' = ntile(meat_cons_g_pperson_pday,100)) %>%
+  mutate('overweight_pctile' = ntile(percent_overweight_obese,100)) %>%
+  mutate('obesity_pctile' = ntile(percent_obese,100)) %>%
+  select(year, name, meat_cons_pctile, overweight_pctile, obesity_pctile)
+
+full_project_data %>% group_by(name) %>% 
+  mutate(cum_mean_meat_cons = cummean(meat_cons_g_pperson_pday)) %>%
+  select(year, name, cum_mean_meat_cons)
+
+# making a categorical variable from a numerical variable
+full_project_data %>% summarize(mean(meat_cons_g_pperson_pday))
+full_project_data %>% summarize(sd(meat_cons_g_pperson_pday))
+qnorm(p=.0015, mean=166.8963, sd=82.07575)
+qnorm(p=.025, mean=166.8963, sd=82.07575)
+qnorm(p=.16, mean=166.8963, sd=82.07575)
+qnorm(p=.84, mean=166.8963, sd=82.07575)
+qnorm(p=.975, mean=166.8963, sd=82.07575)
+qnorm(p=.9985, mean=166.8963, sd=82.07575)
+full_project_data <- full_project_data %>%
+  mutate(meat2 = case_when(meat_cons_g_pperson_pday>327.7618 ~ 'high',
+                        meat_cons_g_pperson_pday<=327.7618 & 6.030786<=meat_cons_g_pperson_pday ~ 'med',
+                        meat_cons_g_pperson_pday<6.030786 ~ 'low'))
+full_project_data %>% summarize(n_distinct(meat2))
+
+# making a numerical variable (explanation below the heatmap)
+full_project_data <- full_project_data %>%
+  mutate(percent_overweight = percent_overweight_obese-percent_obese)
+
+# correlation matrix
+p_cormat <- full_project_data %>% 
+  select_if(is.numeric) %>% 
+  select(!percent_overweight_obese) %>% cor
+```
+
+### Visualizing
+
+```{R}
+tidycor <- p_cormat %>% as.data.frame %>%
+  rownames_to_column('var1') %>%
+  pivot_longer(-1, names_to = 'var2', values_to='correlation')
+
+tidycor %>%
+  ggplot(aes(var1,var2,fill=correlation)) +
+  geom_tile() +
+  scale_fill_gradient2(low = 'green', mid = 'white', high = 'red') +
+  geom_text(aes(label = round(correlation,2)), color = 'black', size = 4) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  coord_fixed()
+```
+Year seems to have mostly low correlation with other variables, and surprisingly, the price of a Big Mac burger does not strongly relate to other variables much. The amount of meat consumed in grams per person per day somewhat predicts the percentage of adults in a country who are overweight or obese. As more meat is consumed, and perhaps more calories, weight from muscle or fat may increase. The percentage of overweight adults in a country strongly predicts the percentage of obese adults and vice versa.
+
+While creating the correlation matrix for this correlation heatmap, "percent_overweight_obese" was omitted because this percentage includes both percentage of overweight adults and percentage of obese adults per country per year. I didn't believe this would fit when trying to visualize any correlation it may have with other variables.
+```{R}
+ggplot(full_project_data, aes(x=percent_overweight, y=percent_obese)) +
+  geom_point(aes(color=name), size=.5) + 
+  geom_smooth(method='lm') +
+  xlab('Percentage of Overweight Adults') +
+  ylab('Percentage of Obese Adults') +
+  ggtitle('Percentage of Obese vs. Overweight Adults') +
+  labs(color = 'Country')
+```
+This plot illustrates the correlation between percent of overweight adults and percent of obese adults by country. As the percentage of overweight adults begins to increase, the correlation with percentage of obese adults seems to increase as well.
+
+```{R}
+ggplot(full_project_data, aes(x=year, y=dollar_price, fill=meat2)) +
+  geom_bar(stat='summary', position='dodge') +
+  geom_errorbar(stat='summary', position='dodge') +
+  xlab('Year') +
+  ylab('Price of a Big Mac in USD($)') +
+  ggtitle('Price of a Big Mac Over Time by Consumption Level') +
+  labs(fill = 'Meat Consumption')
+```
+This bar plot depicts the gradual yearly increase in the average price of a Big Mac burger, and separates each year into whether meat consumption was high or in the middle (values deemed low, or 2 standard deviations and more below the mean, did not exist). While this looks like a strong positive correlation, there are many factors that could have caused this increase such as inflation of the US Dollar. It's interesting to see that in some years, meat consumption was within 1 standard deviation away from the mean. I wonder what may have caused this. Economic changes? A wave of changing societal views to eat less meat?
+
+### Dimensionality Reduction
+
+```{R}
+library(GGally)
+
+PCAp <- full_project_data %>% select(-2, -6)
+# selected the variables I want to use
+proj_nums <- PCAp %>% select_if(is.numeric) %>% scale
+# normalized
+rownames(proj_nums) <- PCAp$name
+proj_pca <- princomp(proj_nums)
+names(proj_pca)
+
+summary(proj_pca, loadings = T)
+```
+With a high PC1 value, most variables will be high. With a high PC2 value, year will be high meaning later in time, and Big Mac USD price will be high while meat consumption, percent obese, and percent overweight will be low.
+```{R}
+eigval <- proj_pca$sdev^2
+varprop=round(eigval/sum(eigval), 2)
+
+ggplot() + geom_bar(aes(y=varprop, x=1:5), stat="identity") + xlab("") + geom_path(aes(y=varprop, x=1:5)) + 
+  geom_text(aes(x=1:5, y=varprop, label=round(varprop, 2)), vjust=1, col="white", size=5) + 
+  scale_y_continuous(breaks=seq(0, .6, .2), labels = scales::percent) + 
+  scale_x_continuous(breaks=1:10)
+
+round(cumsum(eigval)/sum(eigval), 2)
+eigval
+```
+I should keep 3 PCs as that is where the cumulative proportion of variance is first greater than 80% and simultaneously where the eigenvalue is greater than 1.
+```{R}
+projdf <- data.frame(Name=PCAp$name, PC1 = proj_pca$scores[,1], PC2 = proj_pca$scores[,2])
+
+ggplot(projdf, aes(PC1, PC2)) + geom_point()
+```
+This plot shows how each observation scores on PC1 and PC2. It seems like a greater proportion of the observations score positively on PC1, and the ones that score negatively are very spread out. It seems to be about the same for PC2 as well, but more centered around 0.
+
+Highest scores on PC1.
+```{R}
+proj_pca$scores[,1:4] %>% as.data.frame  %>% top_n(3, Comp.1)
+PCAp %>% filter(name=='Australia', year=='2011')
+PCAp %>% filter(name=='Australia', year=='2013')
+PCAp %>% filter(name=='United States', year=='2013')
+```
+Lowest scores on PC1.
+```{R}
+proj_pca$scores[,1:4] %>% as.data.frame  %>% top_n(-3, Comp.1)
+PCAp %>% filter(name=='Indonesia', year=='2000')
+PCAp %>% filter(name=='Indonesia', year=='2001')
+PCAp %>% filter(name=='Sri Lanka', year=='2000')
+```
+Highest scores on PC2.
+```{R}
+proj_pca$scores[,1:4] %>% as.data.frame  %>% top_n(3, wt=Comp.2)
+PCAp %>% filter(name=='Norway', year=='2008')
+PCAp %>% filter(name=='Sri Lanka', year=='2009')
+PCAp %>% filter(name=='Norway', year=='2010')
+```
+Lowest scores on PC2.
+```{R}
+proj_pca$scores[,1:4] %>% as.data.frame %>% top_n(3, wt=desc(Comp.2))
+PCAp %>% filter(name=='Australia', year=='2000')
+PCAp %>% filter(name=='Hungary', year=='2000')
+PCAp %>% filter(name=='Australia', year=='2001')
+```
+
+```{R}
+proj_pca$loadings[1:5, 1:2] %>% as.data.frame %>% rownames_to_column %>% ggplot() + geom_hline(aes(yintercept=0), lty=2) +   geom_vline(aes(xintercept=0), lty=2) + ylab("PC2") + xlab("PC1") +   geom_segment(aes(x=0, y=0, xend=Comp.1, yend=Comp.2), arrow=arrow(), col="red") +   geom_label(aes(x=Comp.1*1.1, y=Comp.2*1.1, label=rowname))
+```
+All variables positively contribute to PC1, but meat consumption, percent of overweight adults, and percent of obese adults contribute the most. Year and Big Mac USD price contribute positively to PC2 while meat consumption, percent obese, and percent overweight contribute negatively to PC2.
+
+### Dataset sources
+
+- big mac https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-12-22/readme.md
+- share of adults who are overweight https://ourworldindata.org/grapher/share-of-adults-who-are-overweight
+- share of adults defined as obese https://ourworldindata.org/grapher/share-of-adults-defined-as-obese
+- daily meat consumption (grams) per person per day https://ourworldindata.org/grapher/daily-meat-consumption-per-person?tab=chart

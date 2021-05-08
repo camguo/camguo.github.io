@@ -1,0 +1,344 @@
+---
+title: 'Project 2: Modeling, Testing, and Predicting'
+author: "Camilla Guo (cdg2837)"
+date: ''
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE,fig.align="center",warning=FALSE,message=FALSE,fig.width=8, fig.height=5, linewidth=60)
+options(tibble.width = 100,width = 100)
+library(tidyverse)
+```
+
+# Introduction
+
+The carnivora dataset contains various information about "dog-like" and "cat-like" (based on superfamily) carnivores such as taxonomic, morphological, and life history data. Taxonomic variables include their order, superfamily, family, genus, and species. Only superfamily and family will be used due to the other three containing too many distinct values or too little. Morphological variables include average female body weight (kg), average body weight of adult males and adult females (kg), average female brain weight (g), and average brain weight of adult males and adult females (g). Life history variables include average litter size, gestation length (days), birth weight (g), weaning age (days), age of independance (days), longevity (months), age of sexual maturity (days), and inter-birth intervals (months). Only litter size and gestation length (days) will be used due to the other variables missing values. Initially there are 112 observations and 17 variables. After omission, 91 observations and 8 variables remain.
+
+```{R}
+library(ape)
+library(dplyr)
+library(glmnet)
+library(lmtest)
+library(plotROC)
+library(sandwich)
+library(rstatix)
+library(tidyverse)
+
+class_diag <- function(prob,truth){
+  #CONFUSION MATRIX: CALCULATE ACCURACY, TPR, TNR, PPV
+  
+  if(is.character(truth)==TRUE) truth<-as.factor(truth)
+  if(is.numeric(truth)==FALSE & is.logical(truth)==FALSE) truth<-as.numeric(truth)-1
+  
+  tab<-table(factor(prob>.5,levels=c("FALSE","TRUE")),factor(truth, levels=c(0,1)))
+  acc=sum(diag(tab))/sum(tab)
+  sens=tab[2,2]/colSums(tab)[2]
+  spec=tab[1,1]/colSums(tab)[1]
+  ppv=tab[2,2]/rowSums(tab)[2]
+  
+  #CALCULATE EXACT AUC
+  ord<-order(prob, decreasing=TRUE)
+  prob <- prob[ord]; truth <- truth[ord]
+  
+  TPR=cumsum(truth)/max(1,sum(truth)) 
+  FPR=cumsum(!truth)/max(1,sum(!truth))
+  
+  dup <-c(prob[-1]>=prob[-length(prob)], FALSE)
+  TPR <-c(0,TPR[!dup],1); FPR<-c(0,FPR[!dup],1)
+  n <- length(TPR)
+  auc <- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+
+  data.frame(acc,sens,spec,ppv,auc)
+}
+```
+```{R}
+data(carnivora)
+carnivora %>% summarize_all(n_distinct)
+carni <- carnivora %>% dplyr::select(SuperFamily, Family, FW:GL) %>% na.omit()
+```
+
+-----
+
+# MANOVA, ANOVA, and post-hoc t tests
+
+```{R}
+# MANOVA
+man <- manova(cbind(SW, SB, GL)~Family, data = carni)
+summary(man)
+
+# ANOVA
+summary.aov(man)
+
+# t tests
+carni %>% group_by(Family) %>%
+  summarize(mean(SW), mean(SB), mean(GL))
+
+pairwise.t.test(carni$SW,
+                carni$Family, p.adj = 'none')
+pairwise.t.test(carni$SB,
+                carni$Family, p.adj = 'none')
+pairwise.t.test(carni$GL,
+                carni$Family, p.adj = 'none')
+
+# type 1 error probability
+1 - (.95^25) # = 0.7226104
+```
+1 MANOVA, 3 ANOVA, and 21 t tests were performed for a total of 25 tests. The probability of at least one type 1 error is 0.7226104.
+```{R}
+# bonferroni correction
+0.05/25 # = 0.002
+```
+MANOVA and ANOVA test results were significiant before and after a bonferroni correction. From the t tests, we can see that Ursidae differs the most from the other species in average body weight and average brain weight of adult males and females before and after the bonferroni correction. When it came to gestation length however, not much difference was observed, and very little witha bonferroni correction, but the most significant difference with and without the correction was between Mustelidae and Felidae.
+```{R}
+# assumptions
+group <- carni$Family
+DVs <- carni %>% select(SW,SB,GL)
+lapply(split(DVs,group), cov)
+box_m(DVs, group)
+```
+The multivariate normality assumption was likely met as there are more than 20 observations per variable. Observations should be independent of one another. There also shouldn't be any extreme outliers. However, it seems very likely that most assumptions were violated.
+
+-----
+
+# Randomization test
+
+```{R}
+carni %>% group_by(SuperFamily) %>% 
+  summarize(means=mean(GL)) %>%
+  summarize('mean_diff'=diff(means))
+# 17.31859
+
+set.seed(56)
+rand_dist <- vector()
+for(i in 1:5000){
+  carni_df <- data.frame(GL = sample(carni$GL), SuperFamily = carni$SuperFamily)
+  rand_dist[i] <- mean(carni_df[carni_df$SuperFamily == 'Caniformia',]$GL) -
+                  mean(carni_df[carni_df$SuperFamily == 'Feliformia',]$GL)
+}
+
+mean(rand_dist < -17.31859 | rand_dist > 17.31859)
+# 2e-04
+
+{hist(rand_dist,main="",ylab=""); abline(v = c(17.31859,-17.31859),col="red")}
+```
+H0 : There is no mean gestation length difference between the two super families Caniformia and Feliformia.
+
+HA : There is a mean gestation length difference between the two super families Caniformia and Feliformia.
+
+The p-value is much smaller than 0.05 so we should reject the null hypothesis. There seems to be evidence of a difference in mean gestation length between Caniformia and Feliformia.
+
+-----
+
+# Linear regression
+    
+```{R}
+# mean centering
+carni$LS_c <- carni$LS - mean(carni$LS)
+mean(carni$LS) # = 3.375824
+carni$GL_c <- carni$GL - mean(carni$GL)
+mean(carni$GL) # = 65.78571
+carni <- carni %>% mutate_at('SuperFamily', as.factor)
+
+# regression model
+lmfit <- lm(GL_c~SuperFamily*LS_c, data = carni)
+coeftest(lmfit)
+```
+Predicted gestation length for a Caniformia carnivore with an average litter size of 3.375824 is 5.2567.
+Controlling for litter size, gestation length is 10.7955 days longer for Feliformia carnivores compared to Caniformia carnivores.
+Controlling for super family, Caniformia carnivores have a decrease in gestation length of 4.5669 days for every 1-unit increase in litter size.
+The slope for litter size on gestation length in days is 2.3253 smaller for Feliformia carnivores compared to Caniformia carnivores.
+```{R}
+# regression plot
+ggplot(carni, aes(LS,GL)) + geom_point() + geom_smooth(method='lm', se=F)
+
+# R^2
+SSE <- sum(lmfit$residuals^2)
+SST <- sum((carni$GL - mean(carni$GL))^2)
+1 - (SSE/SST) # = 0.192643
+```
+The model explains 0.192643 of the variation in the outcome. 
+```{R}
+# assumptions
+resids<-lmfit$residuals
+fitvals<-lmfit$fitted.values
+
+ggplot() + geom_point(aes(fitvals,resids)) +
+  geom_hline(yintercept=0, color='red')
+
+ggplot() + geom_qq(aes(sample=resids)) +
+  geom_qq_line(aes(sample=resids), color='red')
+```
+Normality assumption is met. Linearity and homoskedascity are mostly met. There are some observations that look like outliers and are causing skews.
+```{R}
+# regression w/ robust SEs
+coeftest(lmfit, vcov = vcovHC(lmfit))
+```
+After computing regression results with robust standard errors, Super Family is significant and litter size is no longer significant.
+
+-----
+
+# Linear regression with bootstrapped SEs
+
+```{R}
+set.seed(56)
+samp_distn<-replicate(5000, {  
+  boot_dat<-boot_dat<-carni[sample(nrow(carni),replace=TRUE),]  
+  fit<-lm(GL~SuperFamily*LS_c, data=boot_dat)
+  coef(fit) 
+})
+
+## Estimated SEs
+
+samp_distn%>%t%>%as.data.frame%>%summarize_all(sd)
+```
+The bootstrap SE is greater than the original SE but less than the robust SE for the intercept, and is likely not significant. The Super Family bootstrap SE is less than the original and robust SE, and is likely significant with bootstrap SEs. The bootstrap SE is greater than the original SE but less than the robust SE for litter size, and is probably not significant. The interaction bootstrap SE is less than the original and robust SE, and is likely not significant.
+
+-----
+
+# Logistic regression
+
+```{R}
+carni <- carni %>% mutate(bSF = ifelse(SuperFamily == 'Caniformia', 1, 0))
+
+glmfit1 <- glm(bSF~FW+FB, data = carni, family = 'binomial')
+coeftest(glmfit1)
+exp(0.3139297)
+exp(-0.0056720)
+exp(0.0012210)
+```
+Holding FB constant, every 1 increase in FW multiplies odds by a factor of 0.9943441. Holding FW constant, every 1 increase in FB multiplies odds by a factor of 1.001222.
+```{R}
+prob1 <- predict(glmfit1, type = 'response')
+
+table(predict = as.numeric(prob1 > 0.5), truth = carni$bSF) %>% addmargins
+
+class_diag(prob1, carni$bSF)
+```
+The model correctly classified 0.5824176 of all observations.
+The model correctly predicted 0.9807692 of Caniformias as Caniformia.
+The model correctly predicted 0.05128205 of Feliformias as Feliformias.
+0.5795455 of those classified as Caniformia are actually Caniformia.
+The AUC of 0.6711045 indicates that female body weight and brain weight is a poor classifier of super family.
+```{R}
+carni %>% ggplot() +
+  geom_density(aes(prob1,color=SuperFamily,fill=SuperFamily), alpha=.4) +
+  theme(legend.position=c(.85,.85))+geom_vline(xintercept=0)+xlab("logit (log-odds)")+
+  geom_rug(aes(prob1,color=SuperFamily))+
+  geom_text(x=-5,y=.07,label="TN = 431")+
+  geom_text(x=-1.75,y=.008,label="FN = 19")+
+  geom_text(x=1,y=.006,label="FP = 13")+
+  geom_text(x=5,y=.04,label="TP = 220")
+
+ROCplot <- ggplot(carni) +
+  geom_roc(aes(d=bSF, m=prob1), n.cuts=0)
+ROCplot
+
+calc_auc(ROCplot)
+```
+The AUC is still 0.6711045 so female body weight and brain weight are still poor classifiers of super family.
+
+-----
+
+# Logistic regression cont.
+
+```{R}
+glmfit2 <- glm(bSF~FW+SW+FB+SB+LS+GL, data = carni, family = 'binomial')
+coeftest(glmfit2)
+
+prob2 <- predict(glmfit2, type = 'response')
+table(predict = as.numeric(prob2 > 0.5), truth = carni$bSF) %>% addmargins
+
+class_diag(prob2, carni$bSF)
+```
+The model correctly classified 0.8021978 of all observations.
+The model correctly predicted 0.8461538 of Caniformias as Caniformia.
+The model correctly predicted 0.7435897 of Feliformias as Feliformias.
+0.8148148 of those classified as Caniformia are actually Caniformia.
+The AUC of 0.8619329 indicates that the model is a good classifier of super family.
+```{R}
+# 10-fold CV
+set.seed(1)
+k=10
+
+data <- carni %>% sample_frac
+folds <- ntile(1:nrow(data),n=10)
+
+diags<-NULL
+for(i in 1:k){
+  train <- data[folds!=i,]
+  test <- data[folds==i,]
+  
+  truth <- test$bSF
+  
+  fit <- glm(bSF~FW+SW+FB+SB+LS+GL, data=train, family="binomial")
+  
+  prob <- predict(fit, newdata=test, type="response")  
+  
+  diags <-rbind(diags,class_diag(prob,truth))
+}
+summarize_all(diags,mean)
+```
+The model correctly classified 0.7488889 of all observations.
+The model correctly predicted 0.81 of Caniformias as Caniformia.
+The model correctly predicted 0.64 of Feliformias as Feliformias.
+0.7857143 of those classified as Caniformia are actually Caniformia.
+The AUC of 0.8327778 indicates that the model is a good classifier of super family, but is not as good as the in-sample model.
+```{R}
+# LASSO
+y<-as.matrix(carni$bSF)
+x<-model.matrix(bSF~FW+SW+FB+SB+LS+GL,data=carni)[,-1]
+
+cv <- cv.glmnet(x,y,family="binomial")
+lasso <- glmnet(x,y,family="binomial",lambda=cv$lambda.1se)
+coef(lasso)
+```
+Only litter size and gestation length (days) were retained by LASSO.
+```{R}
+# 10-fold CV with lasso variables
+set.seed(1)
+k=10
+
+data <- carni %>% sample_frac
+folds <- ntile(1:nrow(data),n=10)
+
+diags<-NULL
+for(i in 1:k){
+  train <- data[folds!=i,]
+  test <- data[folds==i,]
+  
+  truth <- test$bSF
+  
+  fit <- glm(bSF~LS+GL, data=train, family="binomial")
+  
+  prob <- predict(fit, newdata=test, type="response")  
+  
+  diags <-rbind(diags,class_diag(prob,truth))
+}
+summarize_all(diags,mean)
+```
+The model correctly classified 0.69 of all observations.
+The model correctly predicted 0.79 of Caniformias as Caniformia.
+The model correctly predicted 0.5333333 of Feliformias as Feliformias.
+0.6922619 of those classified as Caniformia are actually Caniformia.
+The AUC of 0.7661111 indicates that the model is a fair classifier of super family, but the quality has dropped noticebly.
