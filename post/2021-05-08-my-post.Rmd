@@ -1,13 +1,13 @@
 ---
-title: Summer 2019 Trip!
+title: Summer 2019 Trip
 author: ''
-date: '2021-05-08'
-slug: Summer 2019 Trip!
+date: '2021-05-09'
+slug: Summer 2019 Trip
 categories: []
 tags: []
 description: ''
 ---
-
+In my Comp Bio class, we learned R and Python. The following is an example of the two ssspeaking.
 ```{R}
 library(reticulate)
 location = "Europe"
