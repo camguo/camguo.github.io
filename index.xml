@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 08 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Summer 2019 Trip!</title>
-      <link>/post/2021/05/08/my-post/</link>
+      <link>/post/2021/05/08/summer-2019-trip/</link>
       <pubDate>Sat, 08 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/2021/05/08/my-post/</guid>
+      <guid>/post/2021/05/08/summer-2019-trip/</guid>
       <description> library(reticulate) location = &amp;quot;Europe&amp;quot; location = &amp;quot;Belgium, the Netherlands, and France&amp;quot; print(f&amp;quot;In summer 2019, I traveled to {r.location}. I&amp;#39;ve included photos from {location} that were only part of the trip.&amp;quot;) ## In summer 2019, I traveled to Europe. I&amp;#39;ve included photos from Belgium, the Netherlands, and France that were only part of the trip. </description>
     </item>
     

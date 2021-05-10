@@ -2,7 +2,7 @@
 title: Summer 2019 Trip!
 author: ''
 date: '2021-05-08'
-slug: my-post
+slug: Summer 2019 Trip!
 categories: []
 tags: []
 description: ''
