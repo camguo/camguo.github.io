@@ -1,5 +1,5 @@
 ---
-title: my post
+title: Summer 2019 Trip!
 author: ''
 date: '2021-05-08'
 slug: my-post
@@ -8,4 +8,17 @@ tags: []
 description: ''
 ---
 
-Hello!
+```{R}
+library(reticulate)
+location = "Europe"
+```
+
+```{python}
+location = "Belgium, the Netherlands, and France"
+print(f"In summer 2019, I traveled to {r.location}. I've included photos from {location} that were only part of the trip.")
+```
+![](/post/2021-05-08-my-post_files/IMG_20190523_195031.jpg)
+![](/post/2021-05-08-my-post_files/IMG_20190525_170552.jpg)
+![](/post/2021-05-08-my-post_files/IMG_20190526_164709.jpg)
+![](/post/2021-05-08-my-post_files/IMG_20190526_170804_1.jpg)
+![](/post/2021-05-08-my-post_files/IMG_20190529_113644.jpg)
