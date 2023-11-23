@@ -1,4 +1,3 @@
 # camguo.github.io
-Programming Portfolio Website
 
-### Information
+This is a programming portfolio website to showcase my skills and projects from throughout university.
