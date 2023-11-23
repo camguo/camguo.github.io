@@ -1,0 +1,78 @@
+body {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    letter-spacing: 1px;
+}
+
+h1 {
+    text-transform: uppercase;
+}
+
+h2 {
+    font-variant: small-caps;
+}
+
+h3 {
+
+}
+
+h4 {
+
+}
+
+h5 {
+
+}
+
+h6 {
+
+}
+
+.hr {
+    width: 50%;
+}
+
+.bi-envelope-fill, .bi-linkedin {
+    color: #67151B;
+}
+
+.bi-envelope-fill:hover, .bi-linkedin:hover {
+    color: #E8AA9B;
+    transform: translate3d(0, -.125rem, 0);
+}
+
+.navbar {
+    background-color: #161A1E;
+    color: #FDFBFF;
+}
+
+.navbar-brand {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.nav-link {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    letter-spacing: 2px;
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+
+.carousel-item img {
+    width: 50%;
+}
+
+.carousel-caption p {
+    margin: 0 auto;
+}
+
+.footer {
+    box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
+}
+
+.footer-text {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    letter-spacing: 1px;
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
