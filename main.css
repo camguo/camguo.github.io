@@ -31,6 +31,11 @@ h6 {
     width: 50%;
 }
 
+.bi-circle, .bi-circle-fill {
+    font-size: .5em;
+    margin-bottom: 1%;
+}
+
 .bi-envelope-fill, .bi-linkedin {
     color: #67151B;
 }
@@ -38,6 +43,10 @@ h6 {
 .bi-envelope-fill:hover, .bi-linkedin:hover {
     color: #E8AA9B;
     transform: translate3d(0, -.125rem, 0);
+}
+
+.hidden-spacer {
+    color: #E3D3C4;
 }
 
 .navbar {
@@ -56,14 +65,6 @@ h6 {
     letter-spacing: 2px;
     font-variant: small-caps;
     text-transform: lowercase;
-}
-
-.carousel-item img {
-    width: 50%;
-}
-
-.carousel-caption p {
-    margin: 0 auto;
 }
 
 .footer {
