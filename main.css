@@ -1,3 +1,26 @@
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f2f2f200;
+    border-radius: 50px;
+    -webkit-box-shadow: inset 0px 0px 5px 1px #666666; 
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: -webkit-linear-gradient(top, #364022 0%, #727355 100%);
+    border-radius: 50px;
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: -webkit-linear-gradient(bottom, #364022 0%, #727355 100%);
+}
+  
 body {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     letter-spacing: 1px;
@@ -12,66 +35,34 @@ h2 {
     font-variant: small-caps;
 }
 
-h3 {
-
-}
-
-h4 {
-
-}
-
-h5 {
-
-}
-
 h6 {
-
+    font-size: 1.1rem;
 }
 
-.list-group-item {
-    background-color: #E3D3C4;
-    border-color: #E3D3C4;
+p {
     margin: 0;
     padding: 0;
 }
 
-.bi-circle, .bi-circle-fill {
+a {
+    display: inline-block;
+}
+
+.fa-circle, .bi-circle-fill {
     font-size: .2em;
     margin: 5% 0;
 }
 
-.bi-arrow-right {
-    position: fixed;
-    right: 20px;
-    bottom: 15px;
-    color: #161A1E;
-}
-
-.bi-arrow-counterclockwise {
-    position: fixed;
-    right: 20px;
-    bottom: 15px;
-    color: #161A1E;
-}
-
-.bi-envelope-fill, .bi-linkedin {
-    color: #67151B;
-}
-
-.bi-envelope-fill:hover, .bi-linkedin:hover {
-    color: #E8AA9B;
-    transform: translate3d(0, -.125rem, 0);
-}
-
 .navbar {
-    background-color: #161A1E;
-    color: #FDFBFF;
+    background-color: #F2F2F2;
+    color: #364022;
 }
 
 .navbar-brand {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     letter-spacing: 2px;
     text-transform: uppercase;
+    color: #364022;
 }
 
 .nav-link {
@@ -81,23 +72,38 @@ h6 {
     text-transform: lowercase;
 }
 
+.carousel .carousel-indicators {
+    margin-bottom: 0;
+}
+
+.carousel-dark .carousel-indicators [data-bs-target] {
+    background-color: #364022;
+}
+
 .flip-card {
     background-color: transparent;
     width: 300px;
     height: 400px;
     perspective: 1000px;
 }
+
+.flip-card-project {
+    background-color: transparent;
+    width: 500px;
+    height: 600px;
+    perspective: 1000px;
+}
   
-.flip-card-inner {
+.flip-card-inner, .flip-card-project-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    text-align: center;
     transition: transform 0.6s;
     transform-style: preserve-3d;
 }
   
-.flip-card:hover .flip-card-inner {
+.flip-card:hover .flip-card-inner,
+.flip-card-project:hover .flip-card-project-inner {
     transform: rotateY(180deg);
 }
   
@@ -108,28 +114,60 @@ h6 {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     padding: 5%;
+    border: 2px solid #364022;
+    border-radius: 25px;
 }
-  
+
+.flip-card-project-front, .flip-card-project-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    padding: 5%;
+    border: 2px solid #364022;
+    border-radius: 25px;
+}
+
 .flip-card-front {
-    background-color: #E3D3C4;
-    border: 1px solid #67151B;
-    border-radius: 25px;
+    background-color: #36402240;
+}
+
+.flip-card-back {
+    background-color: #36402280;
 }
   
-.flip-card-back {
-    background-color: #E3D3C4;
-    border: 1px solid #E8AA9B;
-    border-radius: 25px;
+.flip-card .flip-card-back, .flip-card-project .flip-card-project-back {
     transform: rotateY(180deg);
 }
 
-.footer {
-    box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
+.flip-card .fa-chevron-right,
+.flip-card-project .fa-chevron-right {
+    color: #364022;
+    position: fixed;
+    right: 20px;
+    bottom: 15px;
 }
 
-.footer-text {
+.footer {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     letter-spacing: 1px;
     font-variant: small-caps;
     text-transform: lowercase;
+    color: #364022;
+    box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
+}
+
+.fa-envelope, .bi-linkedin {
+    color: #591902;
+}
+
+.icon-envelope:hover .fa-envelope::before {
+    color: #727355;
+    content: "\f2b6";
+}
+
+.bi-linkedin:hover {
+    color: #727355;
+    transform: translate3d(0, -.125rem, 0);
 }
