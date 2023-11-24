@@ -28,6 +28,9 @@
               <li class="nav-item">
                 <a class="nav-link active" href="#projects">Projects</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#contact">Contact</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -35,27 +38,64 @@
 
     <!-- Page body -->
     <div class="container-fluid text-center justify-content-center mt-5 py-5" style="background-color: #E3D3C4;">
-        <h2 id="hello">Hello!</h2>
-        <p>If you would like to skip to my projects, please click the button in the navbar above.</p>
-        <hr class="hr hr-blurry mx-auto my-5"/>
-        <h2 id="about-me">About Me</h2>
-        <p>I am a Senior majoring in Computer Science at the University of Texas at San Antonio.</p>
-        <p>I have two cats named Mimi and JJ.</p>
-        <p>In my free time, I enjoy playing video games and raising plants, though I don't always have a green thumb.</p>
-        <hr class="hr hr-blurry mx-auto my-5"/>
-        <h2 id="skills">Skills</h2>
-        <div class="d-flex flex-column justify-content-center">
-            <div class="d-flex flex-row justify-content-center align-items-center">
-                <p>Java</p>
-                <p class="hidden-spacer">_</p>
-                <i class="bi-circle-fill"></i>
-                <i class="bi-circle-fill"></i>
-                <i class="bi-circle-fill"></i>
-                <i class="bi-circle"></i>
-                <i class="bi-circle"></i>
+        <div class="row mb-2 d-flex flex-row justify-content-center align-items-center flex-wrap flex-lg-nowrap">
+          <div class="col-1 education-info w-auto">
+            <h2 id="about-me">About Me</h2>
+            <div class="flip-card mb-3">
+              <div class="flip-card-inner">
+                <div class="flip-card-front d-flex flex-column justify-content-center align-items-center">
+                  <h4>University of Texas at San Antonio</h4>
+                  <h5>Bachelor of Science in Computer Science</h5>
+                  <h6>Jan 2022 - Dec 2024</h6>
+                  <h5>Relevant Coursework</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Software Engineering</li>
+                    <li class="list-group-item">Analysis of Algorithms</li>
+                    <li class="list-group-item">Systems Programming</li>
+                    <li class="list-group-item">Application Programming</li>
+                    <li class="list-group-item">Data Structures</li>
+                  </ul>
+                  <i class="bi-arrow-counterclockwise"></i>
+                </div>
+                <div class="flip-card-back d-flex flex-column justify-content-center align-items-center">
+                  <h5>Additional Info</h5>
+                  <p>I have two cats named Mimi and JJ.</p>
+                  <p>In my free time, I enjoy playing video games and raising plants, though I don't always have a green thumb.</p>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="col-1 skills-info w-auto">
+            <h2 id="skills">Skills</h2>
+            <div class="flip-card mb-3">
+              <div class="flip-card-inner">
+                <div class="flip-card-front d-flex flex-column justify-content-center align-items-center">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Java</li>
+                    <li class="list-group-item">C</li>
+                    <li class="list-group-item">HTML/CSS</li>
+                    <li class="list-group-item">Bash</li>
+                    <li class="list-group-item">Python</li>
+                    <li class="list-group-item">Bootstrap</li>
+                    <li class="list-group-item"></li>
+                    <i class="bi-circle-fill"></i>
+                    <li class="list-group-item">Problem Solving</li>
+                    <li class="list-group-item">Quick Learner</li>
+                    <li class="list-group-item">Collaboration</li>
+                  </ul>
+                  <i class="bi-arrow-right"></i>
+                </div>
+                <div class="flip-card-back d-flex flex-column justify-content-center align-items-center">
+                  <ul class="list-group list-group-flush">
+                    <h6>Upcoming:</h6>
+                    <li class="list-group-item">Unity</li>
+                    <li class="list-group-item">Godot</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <hr class="hr hr-blurry mx-auto my-5"/>
         <h2 id="projects">Projects</h2>
         <h4>Game Development</h4>
         <h5>Coming soon...</h5>
@@ -114,7 +154,7 @@
     <!-- Sticky footer -->
     <footer class="footer mt-auto py-3 bg-body-tertiary">
         <div class="container-fluid text-center justify-content-center">
-            <p class="footer-text">Contact me</p>
+            <p class="footer-text" id="contact">Contact me</p>
             <a class="icon-link icon-link-hover" href="#">
                 <i class="bi-envelope-fill"></i>
             </a>
