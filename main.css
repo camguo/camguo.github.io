@@ -37,6 +37,7 @@ h2 {
 
 h6 {
     font-size: 1.1rem;
+    margin-top: 0.5rem;
 }
 
 p {
@@ -48,9 +49,10 @@ a {
     display: inline-block;
 }
 
-.fa-circle, .bi-circle-fill {
-    font-size: .2em;
-    margin: 5% 0;
+.flip-card .fa-circle, .flip-card-project .fa-circle {
+    font-size: .2rem;
+    margin: 0.5rem 0;
+    opacity: 0;
 }
 
 .navbar {
@@ -158,7 +160,7 @@ a {
     box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
 }
 
-.fa-envelope, .bi-linkedin {
+.fa-envelope, .bi-linkedin, .fa-handshake {
     color: #591902;
 }
 
@@ -167,7 +169,7 @@ a {
     content: "\f2b6";
 }
 
-.bi-linkedin:hover {
+.icon-linkedin:hover, .bi-linkedin:hover, .icon-handshake:hover .fa-handshake:hover {
     color: #727355;
     transform: translate3d(0, -.125rem, 0);
 }
