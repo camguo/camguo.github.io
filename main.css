@@ -160,7 +160,7 @@ a {
     box-shadow: 0 0 25px 5px rgba(0,0,0,0.5);
 }
 
-.fa-envelope, .bi-linkedin, .fa-handshake {
+.fa-envelope, .bi-discord, .bi-linkedin, .fa-handshake {
     color: #591902;
 }
 
@@ -169,7 +169,7 @@ a {
     content: "\f2b6";
 }
 
-.icon-linkedin:hover, .bi-linkedin:hover, .icon-handshake:hover .fa-handshake:hover {
+.icon-discord:hover, .bi-discord:hover, .icon-linkedin:hover, .bi-linkedin:hover, .icon-handshake:hover .fa-handshake:hover {
     color: #727355;
     transform: translate3d(0, -.125rem, 0);
 }
