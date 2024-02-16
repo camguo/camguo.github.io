@@ -25,6 +25,7 @@ body {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     letter-spacing: 1px;
     color: #161A1E;
+    background-color: #E3D3C4;
 }
 
 h1 {
@@ -47,6 +48,10 @@ p {
 
 a {
     display: inline-block;
+}
+
+.row {
+    margin: 0;
 }
 
 .flip-card .fa-circle, .flip-card-project .fa-circle {
@@ -91,8 +96,8 @@ a {
 
 .flip-card-project {
     background-color: transparent;
-    width: 500px;
-    height: 600px;
+    width: 35%;
+    height: inherit;
     perspective: 1000px;
 }
   
