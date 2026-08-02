@@ -1,279 +1,405 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Programming Portfolio">
-    <meta name="author" content="Camilla Guo">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link href="main.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/9d3f4be75e.js" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md fixed-top">
-        <div class="container-fluid">
-          <a class="navbar-brand">Camilla Guo</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-md-end" id="navbarCollapse">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#about-me">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#skills">Skills</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#projects">Projects</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#contact">Contact</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Camilla's Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
 
-    <!-- Page body -->
-    <div class="container-fluid text-center justify-content-center mt-5 py-5" style="background-color: #E3D3C4;">
-        <div class="row mb-2 d-flex flex-row justify-content-center align-items-center flex-wrap flex-lg-nowrap">
-          <div class="col-1 intro-info w-auto">
-            <h2 id="about-me">Hello!</h2>
-            <div class="flip-card mb-3">
-              <div class="flip-card-inner">
-                <div class="flip-card-front d-flex flex-column justify-content-center align-items-center">
-                  <h6>I am seeking an internship in</h6>
-                  <p>
-                    <ul>
-                      <li>Game Development</li>
-                      <li>Software Engineering</li>
-                      <li>Web Development</li>
-                    </ul>
-                  </p>
-                  <i class="fa-solid fa-circle"></i>
-                  <h6>My availabilities for 2024:</h6>
-                  <p>
-                    Spring: 1 Jan - 10 May
-                  </p>
-                  <p>
-                    Summer: 11 May - 25 Aug
-                  </p>
-                  <p>
-                    Fall: 26 Aug - 31 Dec
-                  </p>
-                </div>
-                <div class="flip-card-back d-flex flex-column justify-content-center align-items-center">
-                  <p>If you have any questions, please don't hesitant to reach out</p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>My contact information can be found in the footer at the end of the page</p>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-              </div>
-            </div>
-          </div>
-          <div class="col-1 education-info w-auto">
-            <h2 id="about-me">About Me</h2>
-            <!-- About me card -->
-            <div class="flip-card mb-3">
-              <div class="flip-card-inner">
-                <div class="flip-card-front d-flex flex-column justify-content-center align-items-center">
-                  <h5>University of Texas<br>at San Antonio</h5>
-                  <h6>BS in Computer Science<br>Jan 2022 - Dec 2024<br>GPA: 3.88</h6>
-                  <i class="fa-solid fa-circle"></i>
-                  <h6>Relevant Coursework:</h6>
-                  <p>Game Development</p>
-                  <p>Software Engineering</p>
-                  <p>Web Technologies</p>
-                  <p>Systems Programming</p>
-                  <p>Application Programming</p>
-                  <p>Data Structures</p>
-                </div>
-                <div class="flip-card-back d-flex flex-column justify-content-center align-items-center">
-                  <h6>Additional Info:</h6>
-                  <p>I have two cats named Mimi <i class="fa-solid fa-cat" style="color: #BFAC9B;"></i> and JJ <i class="fa-solid fa-cat" style="color: #161A1E; display: inline;"></i></p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>I enjoy playing video games <i class="fa-solid fa-gamepad"></i> and raising plants <i class="fa-solid fa-seedling"></i> though I don't always have a green thumb</p>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-              </div>
-            </div>
-          </div>
-          <div class="col-1 skills-info w-auto">
-            <!-- Skills card -->
-            <h2 id="skills">Skills</h2>
-            <div class="flip-card mb-3">
-              <div class="flip-card-inner">
-                <div class="flip-card-front d-flex flex-column justify-content-center align-items-center">
-                  <p>Unity & C#</p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>Java</p>
-                  <p>C</p>
-                  <p>HTML/CSS & Bootstrap</p>
-                  <p>Bash</p>
-                  <p>Python</p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>Problem Solving</p>
-                  <p>Quick Learner</p>
-                  <p>Collaboration</p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>Cantonese Chinese</p>
-                  <p>Japanese</p>
-                </div>
-                <div class="flip-card-back d-flex flex-column justify-content-center align-items-center">
-                  <h6>Upcoming:</h6>
-                  <p>Godot</p>
-                  <!-- <p>Unity</p> -->
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h2 id="projects">Projects</h2>
-        <!-- Project 1 -->
-        <div class="row py-3 d-flex flex-row justify-content-center align-items-flex-start w-auto">
-            <!-- Project card 1: Cat Catch -->
-            <div class="col-2 flip-card-project">
-              <div class="flip-card-project-inner">
-                <div class="flip-card-project-front d-flex flex-column justify-content-center align-items-center">
-                  <h4>Cat Catch</h4>
-                  <h5>Game</h5>
-                  <h6>Technologies</h6>
-                  <p>Unity</p>
-                  <i class="fa-solid fa-circle"></i>
-                  <h6>Strengths & Weaknesses</h6>
-                  <p>
-                    I'm still very new to Unity and making games in general. However, as I learn more I hope to continously add to and improve my very first game.
-                  </p>
-                </div>
-                <div class="flip-card-project-back d-flex flex-column justify-content-center align-items-center">
-                  <h6>Design explanations</h6>
-                  <p>
-                    I really love cats so I wanted to make a game that's cat-themed.
-                  </p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>
-                    The requirements for this assignment were to make a game where you have to catch falling objects while avoiding falling obstacles, so I thought a high-rise city was a fitting setting.
-                  </p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>
-                    I chose steel beams as the obstacle because buildings are made from them and during construction, there's many at the very top of the building.
-                  </p>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-              </div>
-            </div>
-            <div class="col embed-responsive embed-responsive-16by9 py-5 mt-4">
-              <iframe width="760" height="432" src="https://www.youtube.com/embed/rP8J6Y6AUjo?si=xlnaBIE8q7D7wp5F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-        </div>
-        <!-- Project 2 -->
-        <div class="row py-3 d-flex flex-row justify-content-center align-items-flex-start w-auto">
-            <!-- Codecart carousel -->
-            <div id="carousel" class="col carousel carousel-dark slide carousel-fade" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active justify-content-center">
-                        <img src="assets/codecart-main.png" class="w-100" alt="...">
-                        <div class="carousel-caption position-static">
-                            <p>Welcome page</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item justify-content-center">
-                        <img src="assets/codecart-catalog.png" class="w-100" alt="...">
-                        <div class="carousel-caption position-static mb-2">
-                            <p>Catalog page</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item justify-content-center">
-                        <img src="assets/codecart-cart.png" class="w-100" alt="...">
-                        <div class="carousel-caption position-static mb-2">
-                            <p>Cart page</p>
-                        </div>
-                    </div>
-                </div>
-                <!--
-                <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon me-5" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon ms-5" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-                </button>
-                -->
-            </div>
-            <!-- Project card 2: CodeCart -->
-            <div class="col-2 flip-card-project">
-              <div class="flip-card-project-inner">
-                <div class="flip-card-project-front d-flex flex-column justify-content-center align-items-center">
-                  <h4>CodeCart Grocers & Curbside</h4>
-                  <h5>Web Application</h5>
-                  <h6>Technologies</h6>
-                  <p>Front end: React</p>
-                  <p>Back end: Java | Spring Boot</p>
-                  <p>Database: MySQL</p>
-                  <p>Version control: Github</p>
-                  <h6>Responsibilities</h6>
-                  <p>In our team of 5, I primarily designed the CSS for the web application's pages. My most notable work were the logo and Home, Catalog, and Cart pages.</p>
-                  <h6>Strengths & Weaknesses</h6>
-                  <p>
-                    I thoroughly enjoyed this project and was very eager to learn as I contributed to the best of my ability.
-                    It is unfortunate that prior to this, the only experience I had with our chosen technologies was Java.
-                    However, this encouraged me to utilize my artistic background and skills to design our website.
-                  </p>
-                </div>
-                <div class="flip-card-project-back d-flex flex-column justify-content-center align-items-center">
-                  <h6>Design explanations</h6>
-                  <p>
-                    Throughout the website, I prioritized high visibility by using dark-colored text on a bright background as this maximizes contrast.
-                  </p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>
-                    For the Home page, I wanted the customer to know the purpose of our website the moment they opened our page so I chose a background with a variety of produce.
-                    I wanted to showcase our four main product categories early-on so customers can quickly and easily find what they're looking for.
-                  </p>
-                  <i class="fa-solid fa-circle"></i>
-                  <p>
-                    On the Cart and Catalog pages, I simplified the design so customers can focus on the product images and prices.
-                    I added a high-contrast hover design for the cards so customers can easily see and understand which product they have selected.
-                  </p>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-              </div>
-            </div>
-        </div>
-        <!-- Project 3 ... -->
-    </div>
+		<!-- Wrapper -->
+			<div id="wrapper">
 
-    <!-- Sticky footer -->
-    <footer class="footer mt-auto py-3 bg-body-tertiary">
-        <div class="text-center justify-content-center">
-            <p class="footer-text" id="contact">Contact me</p>
-            <a class="icon-envelope" href="mailto:guocamilla@gmail.com">
-              <i class="fa-solid fa-envelope"></i>
-            </a>
-            <a class="icon-discord" href="https://discordapp.com/users/camg0810" target="_blank">
-              <i class="bi-discord"></i>
-            </a>
-            <a class="icon-linkedin" href="https://www.linkedin.com/in/camilla-guo-6340641aa/" target="_blank">
-              <i class="bi-linkedin"></i>
-            </a>
-            <a class="icon-handshake" href="https://app.joinhandshake.com/stu/users/37719576" target="_blank">
-              <i class="fa-solid fa-handshake"></i>
-            </a>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
-        crossorigin="anonymous">
-    </script>
-  </body>
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<span class="icon solid fa-seedling"></span>
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>Camilla Guo</h1>
+								<p>Software Developer</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#about">About</a></li>
+								<li><a href="#work">Work</a></li>
+								<li><a href="#education">Education</a></li>
+								<li><a href="#projects">Projects</a></li>
+								<!-- <li><a href="#skills">Skills</a></li> -->
+								<li><a href="#contact">Links</a></li>
+								<!-- <li><a href="./assets/Guo_Camilla_Resume.pdf" download="Guo_Camilla_Resume.pdf"></a>Resume</li> -->
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Edu & Certs -->
+							<article id="education">
+								<h2 class="major">Education & Certifications</h2>
+								<h3><strong>University of Texas at San Antonio</strong></h3>
+								<p><em>Bachelor of Science in Computer Science, Minor in Cybersecurity<br>January 2022 - December 2024</em></p>
+								<!-- <h3><strong>University of Texas at Austin</strong></h3>
+								<p><em>Bachelor of Science in Biology<br>August 2018 - May 2021</em></p> -->
+								<h4><a href="https://drive.google.com/file/d/10uGNaSOH3k0XXc9v-l6VG-UK6DOYuDtf/view?usp=sharing" class="icon solid fa-download" download="Guo_Camilla_Resume.pdf"> Resume</a></h4>
+							</article>
+
+						<!-- Work -->
+							<article id="work">
+								<h2 class="major">Work</h2>
+								<!-- <span class="image main"><img src="images/pic02.jpg" alt="" /></span> -->
+								<h3><strong>Software Developer</strong> @ <em>Paycom</em></h3>
+								<p><em>December 2024 - February 2026</em></p>
+								<p>
+									<ul>
+										<li>Wrote a nightly long-running-process job that collects completion progress of year-end tasks for over 500 clients, and stores and updates the data into a table</li>
+										<li>Created an admin-level permission for internal users that grants the ability to remove manual checks from a client’s payroll</li>
+										<li>Developed a React-based dashboard utilizing 5 API calls, useEffect, prop passing, and over 8 custom components</li>
+										<li>Created 3 multi-select input filters in React obtaining options from 5 database queries</li>
+										<li>Included searching of 3 multi-select filter options and value passing for use in 2 database queries</li>
+										<li>Resolved over 10 urgent client-impacting tickets (ex: datafixing client information, resolving setup issues, identifying data error sources, etc.)</li>
+										<li>Restored a Broken Access Control ensuring validation was received from identity and not user input</li>
+									</ul>
+								</p>
+								<h3><strong>Computer Science Tutor</strong> @ <em>UT San Antonio</em></h3>
+								<p><em>September 2023 - November 2024</em></p>
+								<p>
+									<ul>
+										<li>Elaborated, compared, and contrasted concepts and rules to over 100 students one-on-one over 3 semesters in Java, C, Data Structures, and Python</li>
+										<li>Utilized analogies, repetition, and visual diagrams as teaching methods catered to each student</li>
+									</ul>
+								</p>
+								<h4><a href="https://drive.google.com/file/d/10uGNaSOH3k0XXc9v-l6VG-UK6DOYuDtf/view?usp=sharing" class="icon solid fa-download" download="Guo_Camilla_Resume.pdf"> Resume</a></h4>
+							</article>
+
+						<!-- Projects -->
+							<article id="projects">
+								<h2 class="major">Projects</h2>
+								<!-- <span class="image main"><img src="images/pic02.jpg" alt="" /></span> -->
+								<h3><strong>Personal Site</strong></h3>
+								<p><em>Jan 2024 - May 2024</em><br>Technologies: <em>AWS, NGINX, PHP, SQL, HTML, CSS, JavaScript, Bootstrap</em></p>
+								<p>Seven-page dynamically loaded website utilizing: Bootstrap 5 to create a  responsive site; PHP to display page content and process form submission; and MySQL for data storage and retrieval of login credentials.</p>
+
+								<h3><strong>Cat Catch</strong></h3>
+								<p><em>Jan 2024 - Feb 2024</em><br>Technologies: <em>Unity</em></p>
+								<span><iframe width="560" height="315" src="https://www.youtube.com/embed/rP8J6Y6AUjo?si=MLorZ_5_DPH79hFp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></span>
+								<p>1D left-to-right game where the player needs to collect as many points as possible by catching falling cats while avoid falling steel beam obstacles.</p>
+								<h4><a href="https://drive.google.com/file/d/10uGNaSOH3k0XXc9v-l6VG-UK6DOYuDtf/view?usp=sharing" class="icon solid fa-download" download="Guo_Camilla_Resume.pdf"> Resume</a></h4>
+							</article>
+
+						<!-- About -->
+							<article id="about">
+								<h2 class="major">About</h2>
+								<span class="image main"><img src="images/seagull.png" alt="" /></span>
+								<p>Plant mom and cat mom 
+									<span class="icon solid fa-cat" style="color: rgb(150, 130, 130);"></span>
+									<span class="icon solid fa-cat" style="color: rgb(66, 66, 66);"></span>
+								<br>Spare time is spent reading with the cats or hanging out with friends in video games
+								<br>I also enjoy taking photos of plants, animals, and scenery</p>
+							</article>
+
+						<!-- Contact -->
+							<article id="contact">
+								<h2 class="major">Links</h2>
+								<!-- <form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" class="primary" /></li>
+										<li><input type="reset" value="Reset" /></li>
+									</ul>
+								</form> -->
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/camilla-guo-6340641aa/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/camguo" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="mailto:guocamilla@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+									<li><a href="https://drive.google.com/file/d/10uGNaSOH3k0XXc9v-l6VG-UK6DOYuDtf/view?usp=sharing" class="icon solid fa-download" download="Guo_Camilla_Resume.pdf"><span class="label">Resume</span></a></li>
+								</ul>
+							</article>
+
+						<!-- Elements -->
+							<article id="elements">
+								<h2 class="major">Elements</h2>
+
+								<section>
+									<h3 class="major">Text</h3>
+									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
+									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
+									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
+									<hr />
+									<h2>Heading Level 2</h2>
+									<h3>Heading Level 3</h3>
+									<h4>Heading Level 4</h4>
+									<h5>Heading Level 5</h5>
+									<h6>Heading Level 6</h6>
+									<hr />
+									<h4>Blockquote</h4>
+									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
+									<h4>Preformatted</h4>
+									<pre><code>i = 0;
+
+while (!deck.isInOrder()) {
+    print 'Iteration ' + i;
+    deck.shuffle();
+    i++;
+}
+
+print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+								</section>
+
+								<section>
+									<h3 class="major">Lists</h3>
+
+									<h4>Unordered</h4>
+									<ul>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Sagittis adipiscing.</li>
+										<li>Felis enim feugiat.</li>
+									</ul>
+
+									<h4>Alternate</h4>
+									<ul class="alt">
+										<li>Dolor pulvinar etiam.</li>
+										<li>Sagittis adipiscing.</li>
+										<li>Felis enim feugiat.</li>
+									</ul>
+
+									<h4>Ordered</h4>
+									<ol>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Etiam vel felis viverra.</li>
+										<li>Felis enim feugiat.</li>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Etiam vel felis lorem.</li>
+										<li>Felis enim et feugiat.</li>
+									</ol>
+									<h4>Icons</h4>
+									<ul class="icons">
+										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+
+									<h4>Actions</h4>
+									<ul class="actions">
+										<li><a href="#" class="button primary">Default</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+									<ul class="actions stacked">
+										<li><a href="#" class="button primary">Default</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+								</section>
+
+								<section>
+									<h3 class="major">Table</h3>
+									<h4>Default</h4>
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Item One</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Two</td>
+													<td>Vis ac commodo adipiscing arcu aliquet.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Three</td>
+													<td> Morbi faucibus arcu accumsan lorem.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Four</td>
+													<td>Vitae integer tempus condimentum.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Five</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2"></td>
+													<td>100.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+
+									<h4>Alternate</h4>
+									<div class="table-wrapper">
+										<table class="alt">
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Item One</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Two</td>
+													<td>Vis ac commodo adipiscing arcu aliquet.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Three</td>
+													<td> Morbi faucibus arcu accumsan lorem.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Four</td>
+													<td>Vitae integer tempus condimentum.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Five</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2"></td>
+													<td>100.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</section>
+
+								<section>
+									<h3 class="major">Buttons</h3>
+									<ul class="actions">
+										<li><a href="#" class="button primary">Primary</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+									<ul class="actions">
+										<li><a href="#" class="button">Default</a></li>
+										<li><a href="#" class="button small">Small</a></li>
+									</ul>
+									<ul class="actions">
+										<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
+										<li><a href="#" class="button icon solid fa-download">Icon</a></li>
+									</ul>
+									<ul class="actions">
+										<li><span class="button primary disabled">Disabled</span></li>
+										<li><span class="button disabled">Disabled</span></li>
+									</ul>
+								</section>
+
+								<section>
+									<h3 class="major">Form</h3>
+									<form method="post" action="#">
+										<div class="fields">
+											<div class="field half">
+												<label for="demo-name">Name</label>
+												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
+											</div>
+											<div class="field half">
+												<label for="demo-email">Email</label>
+												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
+											</div>
+											<div class="field">
+												<label for="demo-category">Category</label>
+												<select name="demo-category" id="demo-category">
+													<option value="">-</option>
+													<option value="1">Manufacturing</option>
+													<option value="1">Shipping</option>
+													<option value="1">Administration</option>
+													<option value="1">Human Resources</option>
+												</select>
+											</div>
+											<div class="field half">
+												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
+												<label for="demo-priority-low">Low</label>
+											</div>
+											<div class="field half">
+												<input type="radio" id="demo-priority-high" name="demo-priority">
+												<label for="demo-priority-high">High</label>
+											</div>
+											<div class="field half">
+												<input type="checkbox" id="demo-copy" name="demo-copy">
+												<label for="demo-copy">Email me a copy</label>
+											</div>
+											<div class="field half">
+												<input type="checkbox" id="demo-human" name="demo-human" checked>
+												<label for="demo-human">Not a robot</label>
+											</div>
+											<div class="field">
+												<label for="demo-message">Message</label>
+												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
+											</div>
+										</div>
+										<ul class="actions">
+											<li><input type="submit" value="Send Message" class="primary" /></li>
+											<li><input type="reset" value="Reset" /></li>
+										</ul>
+									</form>
+								</section>
+
+							</article>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<!-- <p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p> -->
+						<p class="copyright">Design: <a href="https://html5up.net">HTML5 UP</a>. Images: Camilla Guo.</p>
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
 </html>
